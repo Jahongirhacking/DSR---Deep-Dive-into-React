@@ -1,5 +1,5 @@
-import React from 'react'
-import Square from './Square'
+import React from "react";
+import Square from "./Square";
 
 class App extends React.Component {
   constructor(props) {
@@ -10,16 +10,13 @@ class App extends React.Component {
     };
     this.handleClick = this.handleClick.bind(this);
     this.checkWinner = this.checkWinner.bind(this);
-    this.getStatus = this.getStatus.bind(this);
-    this.getHelp = this.getHelp.bind(this);
-    this.startNewGame = this.startNewGame.bind(this);
   }
 
   handleClick(index) {
-    if(this.state.squares[index] || this.checkWinner()) return;
+    if (this.state.squares[index] || this.checkWinner()) return;
     const newSquares = [...this.state.squares];
-    newSquares[index] = this.state.isTurnX ? 'X' : 'O';
-    this.setState({squares: newSquares, isTurnX: !this.state.isTurnX});
+    newSquares[index] = this.state.isTurnX ? "X" : "O";
+    this.setState({ squares: newSquares, isTurnX: !this.state.isTurnX });
   }
 
   checkWinner = () => {
@@ -34,7 +31,7 @@ class App extends React.Component {
       [0, 4, 8],
     ];
 
-    for(let check of checker) {
+    for (let check of checker) {
       const [e1, e2, e3] = check;
       if (
         this.state.squares[e1] &&
@@ -44,68 +41,67 @@ class App extends React.Component {
         return this.state.squares[e1];
     }
     return null;
-  }
+  };
 
-  getStatus() {
-    let status;
-    const winner = this.checkWinner();
-    if(winner) {
-      status = "Congratulations, Winner is " + winner + "!";
-    } else {
-      let flag = true;
-      for(let square of this.state.squares) flag &= (square!==null);
-      if(!flag) status = (this.state.isTurnX ? "X" : "O") + "'s Turn";
-      else status = "Friendly Draw!";
-    }
-    return status;
-  }
-
-  getHelp() {
-    const emptyPlaces = [];
-    for(let index=0; index<9; index++) {
-      if(this.state.squares[index]===null) {
-        emptyPlaces.push(index);
-      }
-    }
-    if(emptyPlaces.length>0) {
-      const randomIndex = Math.floor(Math.random() * emptyPlaces.length);
-      this.handleClick(emptyPlaces[randomIndex]);
-    }
-  }
-
-  startNewGame() {
-    this.setState({squares: Array(9).fill(null), isTurnX: true});
-  }
-  
   render() {
+    const createSquares = () => {
+      const squares = [];
+      for (let index = 0; index < 9; index++) {
+        squares.push(
+          <Square
+            value={this.state.squares[index]}
+            handleClick={() => this.handleClick(index)}
+          />
+        );
+      }
+      return squares;
+    };
+
+    const getStatus = () => {
+      let status;
+      const winner = this.checkWinner();
+      if (winner) {
+        status = "Congratulations, Winner is " + winner + "!";
+      } else {
+        let flag = true;
+        for (let square of this.state.squares) flag &= square !== null;
+        if (!flag) status = (this.state.isTurnX ? "X" : "O") + "'s Turn";
+        else status = "Friendly Draw!";
+      }
+      return status;
+    };
+
+    const getHelp = () => {
+      const emptyPlaces = [];
+      for (let index = 0; index < 9; index++) {
+        if (this.state.squares[index] === null) {
+          emptyPlaces.push(index);
+        }
+      }
+      if (emptyPlaces.length > 0) {
+        const randomIndex = Math.floor(Math.random() * emptyPlaces.length);
+        this.handleClick(emptyPlaces[randomIndex]);
+      }
+    };
+
+    const startNewGame = () => {
+      this.setState({ squares: Array(9).fill(null), isTurnX: true });
+    };
+
     return (
       <div className="game">
-        <div className="status">{this.getStatus()}</div>
+        <div className="status">{getStatus()}</div>
         <div className="help">
-          <button onClick={this.getHelp}>Help</button>
+          <button onClick={getHelp}>Help</button>
         </div>
         <div className="newGame">
-          <button onClick={this.startNewGame}>Start New Game</button>
+          <button onClick={startNewGame}>Start New Game</button>
         </div>
         <div className="game-field">
-          <div className="row r1">
-            <Square value={this.state.squares[0]} handleClick={() => this.handleClick(0)} />
-            <Square value={this.state.squares[1]} handleClick={() => this.handleClick(1)} />
-            <Square value={this.state.squares[2]} handleClick={() => this.handleClick(2)} />
-          </div>
-          <div className="row r2">
-            <Square value={this.state.squares[3]} handleClick={() => this.handleClick(3)} />
-            <Square value={this.state.squares[4]} handleClick={() => this.handleClick(4)} />
-            <Square value={this.state.squares[5]} handleClick={() => this.handleClick(5)} />
-          </div>
-          <div className="row r3">
-            <Square value={this.state.squares[6]} handleClick={() => this.handleClick(6)} />
-            <Square value={this.state.squares[7]} handleClick={() => this.handleClick(7)} />
-            <Square value={this.state.squares[8]} handleClick={() => this.handleClick(8)} />
-          </div>
+          <div className="row">{createSquares()}</div>
         </div>
       </div>
-      )
+    );
   }
 }
 
