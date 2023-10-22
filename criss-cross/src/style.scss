@@ -3,80 +3,78 @@ $blue-white: #abecff;
 $status-color: #0b8915;
 
 %buttons {
-    border-radius: 6px;
-    border: none;
-    font-weight: bold;
-    padding: 15px;
-    cursor: pointer;
-    transition: 0.1s ease-in;
-    transition-property: background-color;
+  border-radius: 6px;
+  border: none;
+  font-weight: bold;
+  padding: 15px;
+  cursor: pointer;
+  transition: 0.1s ease-in;
+  transition-property: background-color;
 }
 
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: sans-serif, arial;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: sans-serif, arial;
 }
 
 body {
-    background-color: azure;
+  background-color: azure;
 
-    #root {
+  #root {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+
+  .game {
+    display: grid;
+    text-align: center;
+    gap: 20px;
+
+    .status {
+      order: 1;
+      font-weight: bold;
+      color: $status-color;
+    }
+
+    .help {
+      order: 3;
+      > button {
+        @extend %buttons;
+      }
+    }
+
+    .newGame {
+      order: 3;
+      > button {
+        @extend %buttons;
+      }
+    }
+
+    .game-field {
+      order: 2;
+
+      .row {
         display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
+        flex-wrap: wrap;
+        width: 250px;
+
+        button {
+          @extend %buttons;
+          min-width: 80px;
+          min-height: 80px;
+          background-color: $blue;
+          margin-left: 3px;
+          margin-bottom: 3px;
+          font-size: 20pt;
+          &:active {
+            background-color: $blue-white;
+          }
+        }
+      }
     }
-
-    .game {
-        display: grid;
-        text-align: center;
-        gap: 20px;
-
-        .status{
-            order: 1;
-            font-weight: bold;
-            color: $status-color;
-        }
-
-        .help {
-            order: 3;
-            >button {
-                @extend %buttons;
-
-            }
-        }
-
-        .newGame {
-            order: 3;
-            >button {
-                @extend %buttons;
-
-            }
-        }
-
-        .game-field {
-            order: 2;
-
-            .row {
-                display: flex;
-                flex-wrap: wrap;
-                width: 250px;
-
-                button {
-                    @extend %buttons;
-                    min-width: 80px;
-                    min-height: 80px;
-                    background-color: $blue;
-                    margin-left: 3px;
-                    margin-bottom: 3px;
-                    font-size: 20pt;
-                    &:active {
-                        background-color: $blue-white;
-                    }
-                }
-            }
-        }
-    }
+  }
 }
